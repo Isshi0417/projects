@@ -1,91 +1,79 @@
+"""Import random module"""
 import random
-
-MOVES = ["rock", "paper", "scissors", "spock", "lizard"]
-VALID_CHOICES = ["rock", "r","paper", "p", "scissors", "sc",
-                 "spock", "sp", "lizard", "l"]
 
 def prompt(message):
     """Prints message with the given format"""
     print(f"==> {message}")
 
-def display_winner(player, computer):
+def display_winner(player_move, computer_move):
     """Announces winner of rock paper scissors"""
 
-    prompt(f"You chose {player}, computer chose {computer}")
+    prompt(f"You chose {player_move}, computer chose {computer_move}")
 
-    if player == computer:
+    if player_move == computer_move:
         prompt("It's a tie!")
-    elif player_wins(player, computer):
+    elif player_wins(player_move, computer_move):
         prompt("You win!")
     else:
         prompt("Computer wins!")
 
-def player_wins(player_choice, computer_choice):
+def player_wins(player_move, computer_move):
     """Determines if player won"""
-    global player_score
-    global computer_score
 
-    if ((player_choice == "rock" and\
-         (computer_choice == "scissors" or computer_choice == "lizard")) or
+    return bool((player_move == "rock" and\
+         (computer_move in ("scissors", "lizard"))) or
 
-        (player_choice == "scissors" and\
-         (computer_choice == "paper" or computer_choice == "lizard")) or
+        (player_move == "scissors" and\
+         (computer_move in ("paper", "lizard"))) or
 
-        (player_choice == "paper" and\
-         (computer_choice == "rock" or computer_choice == "spock")) or
+        (player_move == "paper" and\
+         (computer_move in ("rock", "spock"))) or
 
-        (player_choice == "spock" and\
-         (computer_choice == "scissors" or computer_choice == "rock")) or
+        (player_move == "spock" and\
+         (computer_move in ("scissors", "rock"))) or
 
-        (player_choice == "lizard" and\
-         (computer_choice == "paper" or computer_choice == "spock"))):
-        player_score += 1
-        return True
-    else:
-        computer_score += 1
-        return False
+        (player_move == "lizard" and\
+         (computer_move in ("paper", "spock"))))
 
-def convert():
-    global choice
-    global computer_choice
+def convert(short_choice):
+    """Converts short answers to complete ones"""
+    if short_choice == "r":
+        short_choice = "rock"
+    elif short_choice == "sc":
+        short_choice = "scissors"
+    elif short_choice == "p":
+        short_choice = "paper"
+    elif short_choice == "sp":
+        short_choice = "spock"
+    elif short_choice == "l":
+        short_choice = "lizard"
 
-    if choice == "r":
-        choice = "rock"
-    elif choice == "sc":
-        choice = "scissors"
-    elif choice == "p":
-        choice = "paper"
-    elif choice == "sp":
-        choice = "spock"
-    elif choice == "l":
-        choice = "lizard"
+    return short_choice
 
-    if computer_choice == "r":
-        computer_choice = "rock"
-    elif computer_choice == "sc":
-        computer_choice = "scissors"
-    elif computer_choice == "p":
-        computer_choice = "paper"
-    elif computer_choice == "sp":
-        computer_choice = "spock"
-    elif computer_choice == "l":
-        computer_choice = "lizard"
-
-def score_board(player_score, computer_score):
+def score_board(p_score, c_score):
+    """Draws scoreboard"""
     print(' ' + '_' * 19)
     print('| Player | Computer |')
-    print(f'|   {player_score}    |    {computer_score}     |')
+    print(f'|   {p_score}    |    {c_score}     |')
     print(' ' + '￣' * 10)
 
+# Constants
+MOVES = ["rock", "paper", "scissors", "spock", "lizard"]
+VALID_CHOICES = ["rock", "r","paper", "p", "scissors", "sc",
+                 "spock", "sp", "lizard", "l"]
+WELCOME = "Welcome to Rock Paper Scissors Spock Lizard!"
+
+# pylint: disable=C0103 (Variables not constants)
 player_score = 0
 computer_score = 0
-welcome = "Welcome to Rock Paper Scissors Spock Lizard!"
 
-print("+" * len(welcome))
-print("Welcome to Rock Paper Scissors Spock Lizard!")
-print("+" * len(welcome))
+# Rock Paper Scissors Spock Lizard
+print("+" * len(WELCOME))
+print(WELCOME)
+print("+" * len(WELCOME))
 
 while player_score < 3 and computer_score < 3:
+    # Play round
     prompt('Choose one: rock (r), paper (p),' +
             'scissors (sc), spock (sp), spock (sp)')
     choice = input()
@@ -98,9 +86,18 @@ while player_score < 3 and computer_score < 3:
 
     computer_choice = random.choice(VALID_CHOICES)
 
-    convert()
+    choice = convert(choice)
+    computer_choice = convert(computer_choice)
 
+    # Results
     display_winner(choice, computer_choice)
-    score_board(player_score, computer_score)
 
+    if choice == computer_choice:
+        pass
+    elif player_wins(choice, computer_choice):
+        player_score += 1
+    else:
+        computer_score += 1
+
+    score_board(player_score, computer_score)
     print("++++++++++++++++++++++++++++++++++++++++++++")
