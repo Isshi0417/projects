@@ -1,6 +1,8 @@
 import random
 
-VALID_CHOICES = ["rock", "paper", "scissors", "spock", "lizard"]
+MOVES = ["rock", "paper", "scissors", "spock", "lizard"]
+VALID_CHOICES = ["rock", "r","paper", "p", "scissors", "sc",
+                 "spock", "sp", "lizard", "l"]
 
 def prompt(message):
     """Prints message with the given format"""
@@ -8,6 +10,7 @@ def prompt(message):
 
 def display_winner(player, computer):
     """Announces winner of rock paper scissors"""
+
     prompt(f"You chose {player}, computer chose {computer}")
 
     if player == computer:
@@ -19,6 +22,7 @@ def display_winner(player, computer):
 
 def player_wins(player_choice, computer_choice):
     """Determines if player won"""
+
     if ((player_choice == "rock" and\
          (computer_choice == "scissors" or computer_choice == "lizard")) or
 
@@ -36,9 +40,36 @@ def player_wins(player_choice, computer_choice):
         return True
     else:
         return False
+    
+def convert():
+    global choice
+    global computer_choice
 
+    if choice == "r":
+        choice = "rock"
+    elif choice == "sc":
+        choice = "scissors"
+    elif choice == "p":
+        choice = "paper"
+    elif choice == "sp":
+        choice = "spock"
+    elif choice == "l":
+        choice = "lizard"
+
+    if computer_choice == "r":
+        computer_choice = "rock"
+    elif computer_choice == "sc":
+        computer_choice = "scissors"
+    elif computer_choice == "p":
+        computer_choice = "paper"
+    elif computer_choice == "sp":
+        computer_choice = "spock"
+    elif computer_choice == "l":
+        computer_choice = "lizard"
+    
 while True:
-    prompt(f'Choose one: {", ".join(VALID_CHOICES)}')
+    prompt('Choose one: rock (r), paper (p),' + 
+            'scissors (sc), spock (sp), spock (sp)')
     choice = input()
 
     while choice not in VALID_CHOICES:
@@ -46,6 +77,8 @@ while True:
         choice = input()
 
     computer_choice = random.choice(VALID_CHOICES)
+
+    convert()
 
     display_winner(choice, computer_choice)
 
