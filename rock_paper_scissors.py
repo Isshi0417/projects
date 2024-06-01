@@ -22,6 +22,8 @@ def display_winner(player, computer):
 
 def player_wins(player_choice, computer_choice):
     """Determines if player won"""
+    global player_score
+    global computer_score
 
     if ((player_choice == "rock" and\
          (computer_choice == "scissors" or computer_choice == "lizard")) or
@@ -37,8 +39,10 @@ def player_wins(player_choice, computer_choice):
 
         (player_choice == "lizard" and\
          (computer_choice == "paper" or computer_choice == "spock"))):
+        player_score += 1
         return True
     else:
+        computer_score += 1
         return False
     
 def convert():
@@ -66,8 +70,17 @@ def convert():
         computer_choice = "spock"
     elif computer_choice == "l":
         computer_choice = "lizard"
-    
-while True:
+
+def score_board(player_score, computer_score):
+    print(' ' + '_' * 19)
+    print('| Player | Computer |')
+    print(f'|   {player_score}    |    {computer_score}     |')
+    print(' ' + '￣' * 10)
+
+player_score = 0
+computer_score = 0
+
+while player_score < 3 and computer_score < 3:
     prompt('Choose one: rock (r), paper (p),' + 
             'scissors (sc), spock (sp), spock (sp)')
     choice = input()
@@ -81,13 +94,4 @@ while True:
     convert()
 
     display_winner(choice, computer_choice)
-
-    prompt("Do you want to play again (y/n)?")
-    answer = input().lower()
-
-    while answer not in ("y", "n"):
-        prompt('Please enter "y" or "n".')
-        answer = input().lower()
-        
-    if answer[0] != "y":
-        break
+    score_board(player_score, computer_score)
