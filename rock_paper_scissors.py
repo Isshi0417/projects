@@ -44,7 +44,7 @@ def player_wins(player_choice, computer_choice):
     else:
         computer_score += 1
         return False
-    
+
 def convert():
     global choice
     global computer_choice
@@ -79,9 +79,14 @@ def score_board(player_score, computer_score):
 
 player_score = 0
 computer_score = 0
+welcome = "Welcome to Rock Paper Scissors Spock Lizard!"
+
+print("+" * len(welcome))
+print("Welcome to Rock Paper Scissors Spock Lizard!")
+print("+" * len(welcome))
 
 while player_score < 3 and computer_score < 3:
-    prompt('Choose one: rock (r), paper (p),' + 
+    prompt('Choose one: rock (r), paper (p),' +
             'scissors (sc), spock (sp), spock (sp)')
     choice = input()
 
@@ -89,9 +94,13 @@ while player_score < 3 and computer_score < 3:
         prompt("That's not a valid choice")
         choice = input()
 
+    print("++++++++++++++++++++++++++++++++++++++++++++")
+
     computer_choice = random.choice(VALID_CHOICES)
 
     convert()
 
     display_winner(choice, computer_choice)
     score_board(player_score, computer_score)
+
+    print("++++++++++++++++++++++++++++++++++++++++++++")
